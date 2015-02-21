@@ -1,0 +1,214 @@
+<!DOCTYPE html><html><head>
+    <title>Cornerstone Member Tithe Report</title>
+    <link rel="stylesheet" type="text/css" href="css/monthly.css">
+    <script src="lib/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script src="lib/websql.js"></script>
+    <script src="month.html.0.x-javascript" type="application/x-javascript" charset="utf-8"></script>
+    <script src="lib/globals.js"></script>
+    <script src="lib/helper.js"></script>
+    <script src="lib/listeners.js"></script>
+    <script src="lib/db.js"></script>
+    <script src="lib/monthly.js"></script>
+    <script src="lib/endmonth.js"></script>
+  </head>
+  <body>
+<div id="ctrpanel" class="noprint">
+  Select The Month:
+  <select id="selMonth">
+    <option>January</option>
+    <option>February</option>
+    <option>March</option>
+    <option>April</option>
+    <option>May</option>
+    <option>June</option>
+    <option>July</option>
+    <option>August</option>
+    <option>September</option>
+    <option>October</option>
+    <option>November</option>
+    <option>December</option>
+  </select>
+  <br>
+  <button id="home">Back to Weekly Page</button>
+  <div id="OpBut">
+  Select The Week:
+  <select id="selWeek">
+    <option value="1">Sunday #1</option>
+    <option value="2">Sunday #2</option>
+    <option value="3">Sunday #3</option>
+    <option value="4">Sunday #4</option>
+    <option value="5">Sunday #5</option>
+  </select>
+ </div>
+  <hr>
+  <button id="dbgmode">Debug Mode</button>
+  <button id="admin">ADMIN Mode</button>
+  <button id="dump">datadump</button>
+  <hr>
+  <button id="exportReport">Export Weekly Data</button>
+  <button id="exportMember">Export Member Data</button>
+  <button id="exportMinistries">Export Ministry Data</button>
+  <hr>
+  <button id="endofMonth">End Of Month Report</button>
+</div>
+<p></p>
+<header>
+  <p></p>
+  <strong><span class="appname"></span> Tithe Report - <span id="MonthWeek"></span></strong> <span class="appversion"></span>
+  <table class="tabledata">
+    <tbody><tr class="rowdata">
+      <th id="sortid">ID</th>
+      <th id="sortname" style="width: 165px;">Member Name</th>
+      <th id="hdrGenCashAmt">General<br>Cash</th>
+      <th id="hdrGenChkNum">Check<br>Number</th>
+      <th id="hdrGenChkAmt">General<br>Check</th>
+      <th id="hdrDesCashAmt">Dsgnt<br>Cash</th>
+      <th id="hdrDesChkNum">Check<br>Number</th>
+      <th id="hdrDesChkAmt">Dsgnt<br>Check</th>
+      <th id="hdrDescription">Description</th>
+      <th>&nbsp;</th>
+    </tr>
+  </tbody></table>
+</header>
+<div id="contentarea">
+  <div class="tabledata" id="records"></div>
+  <table class="tabledata noprint">
+    <tbody><tr class="rowdata">
+      <td><input id="recid" size="2" disabled=""></td>
+      <td><select id="MemberName" style="width: 165px;"></select></td>
+      <td><input id="GenCashAmt" size="4"></td>
+      <td><input id="GenChkNum" size="4"></td>
+      <td><input id="GenChkAmt" size="4"></td>
+      <td><input id="DesCashAmt" size="4"></td>
+      <td><input id="DesChkNum" size="4"></td>
+      <td><input id="DesChkAmt" size="4"></td>
+      <td><select id="Description" style="width: 200px;"></select></td>
+      <td><button id="save">Save</button></td>
+    </tr>
+  </tbody></table>
+==========================================================================================
+    <table class="tabledata">
+      <tbody><tr class="rowdata">
+        <td><input id="ftrrecid" size="2" disabled=""></td>
+        <td><input id="ftrMemberName" style="width: 165px;" disabled="" value="TOTALS =============>"></td>
+        <td><input id="ftrGenCashAmt" size="4" disabled=""></td>
+        <td><input id="ftrGenChkNum" size="4" disabled=""></td>
+        <td><input id="ftrGenChkAmt" size="4" disabled=""></td>
+        <td><input id="ftrDesCashAmt" size="4" disabled=""></td>
+        <td><input id="ftrDesChkNum" size="4" disabled=""></td>
+        <td><input id="ftrDesChkAmt" size="4" disabled=""></td>
+        <td><input id="ftrDescription" size="25" disabled=""></td>
+        <td>&nbsp;</td>
+      </tr>
+    </tbody></table>
+
+    <br>
+    <div id="summary" style="width:800px;">
+    <table style="width:100%;">
+      <tbody><tr>
+        <td colspan="2" style="text-align:left; display:none">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CASH RECONCILIATION</td>
+        <td colspan="2">&nbsp;</td>
+      </tr>
+      <tr>
+        <td style="text-align:right;display:none">Currency:</td>
+        <td style="display:none"><input id="sumCurrencyTotal" size="4" disabled=""></td>
+        <td style="text-align:right;">Total General Tithe:</td>
+        <td><input id="sumGenTotal" size="4" disabled=""></td>
+      </tr>
+      <tr>
+        <td style="text-align:right;display:none">Coins:</td>
+        <td style="display:none"><input id="sumCoinsTotal" size="4" disabled=""></td>
+        <td style="text-align:right;">Total Designated Funds:</td>
+        <td><input id="sumDesTotal" size="4" disabled=""></td>
+      </tr>
+      <tr>
+        <td style="text-align:right;display:none">TOTAL:</td>
+        <td style="display:none"><input id="sumCashTotal" size="4" disabled=""></td>
+        <td style="text-align:right;">Total For Week:</td>
+        <td><input id="sumTotal" size="4" disabled=""></td>
+      </tr>
+    </tbody></table>
+    </div>
+
+    <br>
+    <br>
+
+    <div id="Counters" style="width:800;">
+      <table style="width:100%;align:right;">
+        <tbody><tr>
+          <td style="width:20%;">&nbsp;</td>
+          <td style="text-align:right;">COUNTERS</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td style="width:20%;">&nbsp;</td>
+          <td style="text-align:right;"><input id="ctr1Initial" size="4"></td>
+          <td>Signature: ________________________________________________________</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td style="text-align:right;"><input id="ctr2Initial" size="4"></td>
+          <td>Signature: ________________________________________________________</td>
+        </tr>
+      </tbody></table>
+    </div>
+
+    <div id="initials">
+    <input id="ctr11Initial" size="4">
+    <input id="ctr12Initial" size="4">
+    </div>
+  </div>
+
+<dialog id="AddMember">
+		<h1>Add a New Member</h1>
+		<div>
+		  <p>Add Member Details Below (Hit esc to cancel)</p>
+		  <table>
+			<tbody><tr>
+			  <td style="text-align:right;">Member Name (Last, First):</td>
+			  <td><input id="NewMemberName" size="20" autocomplete="off"></td>
+			</tr>
+			<tr>
+			  <td style="text-align:right;">Description (optional):</td>
+			  <td><input id="NewMemberDesc" size="25" autocomplete="off"></td>
+			</tr>
+			<tr>
+			  <td style="text-align:right;">Active:</td>
+			  <td><input type="checkbox" id="NewMemberAct" checked="" disabled=""></td>
+			</tr>
+		  </tbody></table>
+		  <button id="newMemberSave">Save</button>
+		</div>
+</dialog>
+
+<dialog id="AddDescr">
+		<h1>Add a Description</h1>
+		<div>
+		  <p>Add Description Below (Hit esc to cancel)</p>
+		  <table>
+			<tbody><tr>
+			  <td style="text-align:right;">Description:</td>
+			  <td><input id="NewDescr" size="25" autocomplete="off"></td>
+			</tr>
+			<tr>
+			  <td style="text-align:right;">Re-Use:</td>
+			  <td><input type="checkbox" id="NewDescrReuse" checked="" disabled=""></td>
+			</tr>
+		  </tbody></table>
+		  <button id="newDescrSave">Save</button>
+		</div>
+</dialog>
+
+
+<div id="debug" class="debug">
+  <div id="debugview"></div>
+  <p id="result"></p>
+</div>
+
+    <div id="datadump"></div>
+    <div id="exporteddata"></div>
+
+
+
+
+</body></html>
