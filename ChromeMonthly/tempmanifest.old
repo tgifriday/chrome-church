@@ -1,0 +1,20 @@
+tempmanifest.old
+{
+	"name": "Cornerstone Fellowship Weekly",
+	"description": "weekly/monthly income tracking from offerings",
+	"version": "0.1.0",
+	"manifest_version": 2,
+	"app": {
+		"background": {
+			"scripts": ["background.js","websql.js","monthly.js"]
+		}
+	},
+	"icons": {
+		"16": "CSFMonthly.png",
+		"128": "CSFMonthly.png"
+	},
+	"permissions": [ 
+		"unlimitedStorage",
+		{"fileSystem": ["write"]}
+	]
+}
